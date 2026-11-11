@@ -1,0 +1,67 @@
+# APIMETEO — uma API Node/Express no Render. O frontend React/Vite fica no Vercel.
+services:
+  - type: web
+    name: apimeteo-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - fromGroup: apimeteo-config
+
+envVarGroups:
+  - name: apimeteo-config
+    envVars:
+      - key: APIMETEO_WEATHER_URL_TEMPLATE
+        value: "https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,weather_code,uv_index,visibility&daily=weather_code,temperature_2m_min,temperature_2m_max,precipitation_probability_max,sunrise,sunset&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto&forecast_days=5"
+      - key: APIMETEO_PATH_TEMPERATURE
+        value: current.temperature_2m
+      - key: APIMETEO_PATH_CONDITION
+        value: current.weather_code
+      - key: APIMETEO_PATH_FEELS_LIKE
+        value: current.apparent_temperature
+      - key: APIMETEO_PATH_HUMIDITY
+        value: current.relative_humidity_2m
+      - key: APIMETEO_PATH_WIND_SPEED
+        value: current.wind_speed_10m
+      - key: APIMETEO_PATH_WIND_DIRECTION
+        value: current.wind_direction_10m
+      - key: APIMETEO_PATH_PRESSURE
+        value: current.pressure_msl
+      - key: APIMETEO_PATH_UV_INDEX
+        value: hourly.uv_index
+      - key: APIMETEO_PATH_VISIBILITY
+        value: hourly.visibility
+      - key: APIMETEO_PATH_PRECIPITATION
+        value: current.precipitation
+      - key: APIMETEO_PATH_MIN_TEMPERATURE
+        value: daily.temperature_2m_min.0
+      - key: APIMETEO_PATH_MAX_TEMPERATURE
+        value: daily.temperature_2m_max.0
+      - key: APIMETEO_PATH_SUNRISE
+        value: daily.sunrise.0
+      - key: APIMETEO_PATH_SUNSET
+        value: daily.sunset.0
+      - key: APIMETEO_PATH_TIMEZONE
+        value: timezone
+      - key: APIMETEO_PATH_HOURLY_TIME
+        value: hourly.time
+      - key: APIMETEO_PATH_HOURLY_TEMPERATURE
+        value: hourly.temperature_2m
+      - key: APIMETEO_PATH_HOURLY_CONDITION
+        value: hourly.weather_code
+      - key: APIMETEO_PATH_HOURLY_PRECIPITATION_PROBABILITY
+        value: hourly.precipitation_probability
+      - key: APIMETEO_PATH_DAILY_DATE
+        value: daily.time
+      - key: APIMETEO_PATH_DAILY_MIN_TEMPERATURE
+        value: daily.temperature_2m_min
+      - key: APIMETEO_PATH_DAILY_MAX_TEMPERATURE
+        value: daily.temperature_2m_max
+      - key: APIMETEO_PATH_DAILY_CONDITION
+        value: daily.weather_code
+      - key: APIMETEO_PATH_DAILY_PRECIPITATION_PROBABILITY
+        value: daily.precipitation_probability_max
